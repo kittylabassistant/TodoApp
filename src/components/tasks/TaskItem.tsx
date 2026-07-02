@@ -21,6 +21,7 @@ import {
   SharedByContainer,
   TaskActionsContainer,
   DragHandle,
+  SubtasksProgress,
 } from "./tasks.styled";
 import { calculateDateDifference, formatDate, getFontColor, systemInfo } from "../../utils";
 import { RenderTaskDescription } from "./RenderTaskDescription";
@@ -188,6 +189,13 @@ export const TaskItem = memo(
               enableMoreButton={!!actions}
             />
           </TaskDescription>
+
+          {task.subtasks && task.subtasks.length > 0 && (
+            <SubtasksProgress done={task.done}>
+              {task.subtasks.filter((subtask) => subtask.done).length}/{task.subtasks.length}{" "}
+              subtasks completed
+            </SubtasksProgress>
+          )}
 
           {task.deadline && (
             <Tooltip

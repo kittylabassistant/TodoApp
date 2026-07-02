@@ -29,6 +29,11 @@ export const PROFILE_PICTURE_MAX_LENGTH = 255;
 export const CATEGORY_NAME_MAX_LENGTH = 20;
 
 /**
+ * Maximum length allowed for subtask titles.
+ */
+export const SUBTASK_NAME_MAX_LENGTH = 60;
+
+/**
  * Maximum number of categories can be assigned to one task
  */
 export const MAX_CATEGORIES_IN_TASK = 3;

@@ -4,13 +4,15 @@ import styled from "@emotion/styled";
 import { PathName } from "../styles";
 import NotFound from "./NotFound";
 import { Clear, Done } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import { Emoji } from "emoji-picker-react";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { getColorName } from "ntc-ts";
+import { showToast } from "../utils";
 
 const TaskDetails = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const { tasks, emojisStyle } = user;
   const { id } = useParams();
   const formattedId = id?.replace(".", "");
@@ -36,6 +38,32 @@ const TaskDetails = () => {
     dateStyle: "full",
     timeStyle: "short",
   });
+
+  const toggleSubtask = (subtaskId: string) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      tasks: prevUser.tasks.map((currentTask) => {
+        if (currentTask.id !== task.id) {
+          return currentTask;
+        }
+
+        return {
+          ...currentTask,
+          subtasks: currentTask.subtasks?.map((subtask) =>
+            subtask.id === subtaskId ? { ...subtask, done: !subtask.done } : subtask,
+          ),
+          lastSave: new Date(),
+        };
+      }),
+    }));
+
+    const toggledSubtask = task.subtasks?.find((subtask) => subtask.id === subtaskId);
+    if (toggledSubtask) {
+      showToast(
+        `${toggledSubtask.done ? "Marked subtask as not done" : "Marked subtask as done"}: ${toggledSubtask.title}`,
+      );
+    }
+  };
 
   return (
     <>
@@ -88,6 +116,33 @@ const TaskDetails = () => {
               <TableRow>
                 <TableHeader>Task deadline:</TableHeader>
                 <TableData>{dateFormatter.format(new Date(task.deadline))}</TableData>
+              </TableRow>
+            )}
+            {task.subtasks && task.subtasks.length > 0 && (
+              <TableRow>
+                <TableHeader>Subtasks:</TableHeader>
+                <TableData>
+                  <SubtasksWrapper>
+                    <SubtasksSummary>
+                      {task.subtasks.filter((subtask) => subtask.done).length}/
+                      {task.subtasks.length} completed
+                    </SubtasksSummary>
+                    {task.subtasks.map((subtask) => (
+                      <SubtaskRow key={subtask.id} done={subtask.done}>
+                        <IconButton
+                          size="small"
+                          onClick={() => toggleSubtask(subtask.id)}
+                          aria-label={
+                            subtask.done ? "Mark subtask as not done" : "Mark subtask as done"
+                          }
+                        >
+                          {subtask.done ? <Done fontSize="small" /> : <Clear fontSize="small" />}
+                        </IconButton>
+                        <span translate="no">{subtask.title}</span>
+                      </SubtaskRow>
+                    ))}
+                  </SubtasksWrapper>
+                </TableData>
               </TableRow>
             )}
             <TableRow>
@@ -203,4 +258,26 @@ const CategoryContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
+`;
+
+const SubtasksWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+`;
+
+const SubtasksSummary = styled.div`
+  font-weight: 600;
+`;
+
+const SubtaskRow = styled.div<{ done: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  opacity: ${({ done }) => (done ? 0.72 : 1)};
+
+  span {
+    text-decoration: ${({ done }) => (done ? "line-through" : "none")};
+  }
 `;

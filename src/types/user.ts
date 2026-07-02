@@ -57,6 +57,16 @@ export interface Task {
    * Optional numeric position for drag-and-drop (for p2p sync)
    */
   position?: number;
+  subtasks?: Subtask[];
+}
+
+/**
+ * Represents a subtask nested inside a task.
+ */
+export interface Subtask {
+  id: UUID;
+  title: string;
+  done: boolean;
 }
 
 /**

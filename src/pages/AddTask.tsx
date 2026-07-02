@@ -1,11 +1,11 @@
-import { Category, Task } from "../types/user";
+import { Category, Subtask, Task } from "../types/user";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddTaskButton, Container, StyledInput } from "../styles";
 import { AddTaskRounded, CancelRounded } from "@mui/icons-material";
 import { IconButton, InputAdornment, Tooltip } from "@mui/material";
 import { DESCRIPTION_MAX_LENGTH, TASK_NAME_MAX_LENGTH } from "../constants";
-import { ColorPicker, TopBar, CustomEmojiPicker } from "../components";
+import { ColorPicker, TopBar, CustomEmojiPicker, SubtasksEditor } from "../components";
 import { UserContext } from "../contexts/UserContext";
 import { useStorageState } from "../hooks/useStorageState";
 import { useTheme } from "@emotion/react";
@@ -34,6 +34,7 @@ const AddTask = () => {
     "categories",
     "sessionStorage",
   );
+  const [subtasks, setSubtasks] = useStorageState<Subtask[]>([], "subtasks", "sessionStorage");
 
   const [isDeadlineFocused, setIsDeadlineFocused] = useState<boolean>(false);
 
@@ -111,6 +112,7 @@ const AddTask = () => {
       date: new Date(),
       deadline: deadline !== "" ? new Date(deadline) : undefined,
       category: selectedCategories ? selectedCategories : [],
+      subtasks: subtasks.length > 0 ? subtasks : undefined,
     };
 
     setUser((prevUser) => ({
@@ -129,7 +131,15 @@ const AddTask = () => {
       },
     );
 
-    const itemsToRemove = ["name", "color", "description", "emoji", "deadline", "categories"];
+    const itemsToRemove = [
+      "name",
+      "color",
+      "description",
+      "emoji",
+      "deadline",
+      "categories",
+      "subtasks",
+    ];
     itemsToRemove.map((item) => sessionStorage.removeItem(item));
   };
 
@@ -211,6 +221,8 @@ const AddTask = () => {
               },
             }}
           />
+
+          <SubtasksEditor subtasks={subtasks} onChange={setSubtasks} />
 
           {user.settings.enableCategories !== undefined && user.settings.enableCategories && (
             <div style={{ marginBottom: "14px" }}>

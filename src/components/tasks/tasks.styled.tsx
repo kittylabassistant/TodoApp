@@ -376,3 +376,9 @@ export const TaskActionsContainer = styled.div`
     display: none;
   }
 `;
+
+export const SubtasksProgress = styled.div<{ done: boolean }>`
+  font-size: 0.92rem;
+  opacity: ${({ done }) => (done ? 0.72 : 0.92)};
+  margin-top: 2px;
+`;

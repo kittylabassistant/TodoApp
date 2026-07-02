@@ -5,6 +5,7 @@ export { TopBar } from "./TopBar";
 export { CustomEmojiPicker } from "./EmojiPicker";
 export { SettingsDialog } from "./settings/SettingsDialog";
 export { TaskMenu } from "./tasks/TaskMenu";
+export { SubtasksEditor } from "./tasks/SubtasksEditor";
 export { BottomNav } from "./BottomNav";
 export { CategorySelect } from "./CategorySelect";
 export { ColorPicker } from "./ColorPicker";

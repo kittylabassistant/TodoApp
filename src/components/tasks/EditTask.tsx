@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { ColorPicker, CustomDialogTitle, CustomEmojiPicker } from "..";
+import { ColorPicker, CustomDialogTitle, CustomEmojiPicker, SubtasksEditor } from "..";
 import { DESCRIPTION_MAX_LENGTH, TASK_NAME_MAX_LENGTH } from "../../constants";
 import { UserContext } from "../../contexts/UserContext";
 import { DialogBtn } from "../../styles";
@@ -94,6 +94,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
             description: editedTask.description || undefined,
             deadline: editedTask.deadline || undefined,
             category: editedTask.category || undefined,
+            subtasks: editedTask.subtasks?.length ? editedTask.subtasks : undefined,
             lastSave: new Date(),
           };
         }
@@ -247,6 +248,16 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
               transition: ".3s all",
             },
           }}
+        />
+
+        <SubtasksEditor
+          subtasks={editedTask?.subtasks || []}
+          onChange={(subtasks) =>
+            setEditedTask((prevTask) => ({
+              ...(prevTask as Task),
+              subtasks,
+            }))
+          }
         />
 
         {settings.enableCategories !== undefined && settings.enableCategories && (
