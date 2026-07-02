@@ -1,5 +1,6 @@
 import { systemInfo } from "../../../utils";
 import CustomSwitch from "../CustomSwitch";
+import NotificationSettings from "../NotificationSettings";
 
 export default function GeneralTab() {
   return (
@@ -16,6 +17,7 @@ export default function GeneralTab() {
         disabled={!systemInfo.isPWA || !("setAppBadge" in navigator)}
         disabledReason="This feature requires the app to be installed as a PWA and supported by your browser."
       />
+      <NotificationSettings />
       <CustomSwitch
         settingKey="doneToBottom"
         header="Completed Tasks at Bottom"

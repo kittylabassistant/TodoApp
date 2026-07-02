@@ -80,6 +80,11 @@ export interface AppSettings {
   simpleEmojiPicker: boolean;
   enableReadAloud: boolean;
   appBadge: boolean;
+  /**
+   * Show a notification when a task's deadline is reached (while the app is open).
+   * On iOS this only works in an installed (standalone) PWA.
+   */
+  enableReminders: boolean;
   showProgressBar: boolean;
   /**
    * Voice property in the format 'name::lang' to ensure uniqueness on macOS/iOS,

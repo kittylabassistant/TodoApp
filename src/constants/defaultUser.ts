@@ -24,6 +24,7 @@ export const defaultUser: User = {
     voice: "Microsoft Mark - English (United States)::en-US",
     voiceVolume: 0.6,
     appBadge: false,
+    enableReminders: false,
     showProgressBar: true,
     sortOption: "dateCreated",
     reduceMotion: "system",

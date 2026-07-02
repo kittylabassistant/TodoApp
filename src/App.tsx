@@ -8,6 +8,7 @@ import { CustomToaster } from "./components/Toaster";
 import { defaultUser } from "./constants/defaultUser";
 import { UserContext } from "./contexts/UserContext";
 import { useSystemTheme } from "./hooks/useSystemTheme";
+import { useTaskReminders } from "./hooks/useTaskReminders";
 import AppRouter from "./router";
 import { GlobalStyles } from "./styles";
 import { Themes, createCustomTheme } from "./theme/createTheme";
@@ -19,6 +20,8 @@ import { isDarkMode } from "./utils/colorUtils";
 function App() {
   const { user, setUser } = useContext(UserContext);
   const systemTheme = useSystemTheme();
+
+  useTaskReminders();
 
   // Initialize user properties if they are undefined
   // this allows to add new properties to the user object without error

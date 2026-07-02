@@ -15,6 +15,8 @@ export const settingsEmojiPreviewAssets = Object.values(EmojiStyle)
 
 const workbox: Partial<GenerateSWOptions> = {
   cleanupOutdatedCaches: true,
+  // Inject custom SW logic (notification click handling) into the generated SW.
+  importScripts: ["notifications-sw.js"],
   globDirectory: "dist",
   globPatterns: ["**/*.{js,css,html,svg,png,webmanifest,webp}"],
   additionalManifestEntries: [...settingsEmojiPreviewAssets],
